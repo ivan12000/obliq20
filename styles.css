@@ -124,8 +124,6 @@ body {
 
 /* Button Container */
 #button-container {
-    position: absolute; /* Position relative to #main-screen */
-    bottom: 20px; /* Distance from the bottom of the #main-screen */
     right: 20px; /* Distance from the right side of the #main-screen */
   }
   
