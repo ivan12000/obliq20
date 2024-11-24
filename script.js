@@ -238,6 +238,26 @@ function removeDuplicates(files)
         return Array.from(uniqueElements.values());
 }
 
+function removeDuplicates2(files)
+{
+    const uniqueElements = new Map();
+    
+    files.forEach(element => {
+            // Split the string by '-'
+            const parts = element.split('-');
+            // Get the unique key (data before the second "-" from the end)
+            const uniqueKey = parts[1] + "-" + parts[2]+ "-" + parts[3]+ "-" + parts[4]+ "-" + parts[5]+ "-" + parts[6];
+    
+            // If the key doesn't exist in the map, add it
+            if (!uniqueElements.has(uniqueKey)) {
+                uniqueElements.set(uniqueKey, element);
+            }
+        });
+    
+        // Return the filtered elements
+        return Array.from(uniqueElements.values());
+}
+
 function filterIgnoredVIDs(files)
 {
     const ignoredVIDs = [
@@ -256,7 +276,7 @@ function filterIgnoredVIDs(files)
 
 function filterFiles(files)
 {
-    return removeDuplicates(filterIgnoredVIDs(files));
+    return removeDuplicates2(removeDuplicates(filterIgnoredVIDs(files)));
 }
 
 function sortFiles(files) {
@@ -483,7 +503,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         {
             rememberMeCheckbox.disabled = true;
         }
-        
         
         if (baseDell && baseDell.length > 0 && myVid && myVid.length > 0)
         {
