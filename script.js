@@ -273,6 +273,29 @@ function sortFiles(files) {
     });
 }
 
+function moveItemAfterItemInList(referenceItem, targetItem, list)
+{
+    let result = [];
+
+    for (element of list)
+    {
+        if (element === referenceItem)
+        {
+            result.push(referenceItem);
+            result.push(targetItem);
+        } 
+        else if (element === targetItem)
+        {
+            // skip
+        }
+        else
+        {
+            result.push(element);
+        }
+    }
+    return result;
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     // DOM Elements
     const loadingScreen = document.getElementById('loading-screen');
@@ -358,16 +381,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (myData.length === 0)
             {
                 let tableHeader = Array.from(jsonMap.keys());
-                if (!tableHeader.includes("Уровень образования")) {
-                    let index = tableHeader.indexOf("Семейное положение");
-                    
-                    if (tableHeader !== -1) {
-                        tableHeader.splice(index + 1, 0, "Уровень образования");
-                    }
-                  }
+
+                tableHeader = moveItemAfterItemInList("Семейное положение", "Уровень образования", tableHeader);
+                tableHeader = moveItemAfterItemInList("Наука", "Образование", tableHeader);
+                tableHeader = moveItemAfterItemInList("Время отправки", "Временная зона", tableHeader);
+
                 myData.push(tableHeader);
             }
-            const values = myData[0].map(key => jsonMap.has(key) ? jsonMap.get(key) : "");
+            const values = myData[0].map(key => jsonMap.has(key) ? jsonMap.get(key) : "Высшее (бакалавриат)");
             myData.push(values);
         }
     }
@@ -462,7 +483,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         {
             rememberMeCheckbox.disabled = true;
         }
-
+        
+        
         if (baseDell && baseDell.length > 0 && myVid && myVid.length > 0)
         {
             const myBull = await loadBull(myVid);
