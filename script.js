@@ -378,6 +378,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   
       if (newPassword && newPassword.length>0 && newPassword === confirmPassword) {
         showLoadingScreen("Сохранение...");
+        baseDell = newPassword;
         await setDell(newPassword);
         if (myVid && myVid.length > 0 && rememberMeCheckbox.checked)
         {
