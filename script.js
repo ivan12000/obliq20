@@ -218,6 +218,61 @@ function reviewRecord(recordMap)
     return recordMap;
 }
 
+function removeDuplicates(files)
+{
+    const uniqueElements = new Map();
+    
+    files.forEach(element => {
+            // Split the string by '-'
+            const parts = element.split('-');
+            // Get the unique key (data before the second "-" from the end)
+            const uniqueKey = parts.slice(0, -2).join('-');
+    
+            // If the key doesn't exist in the map, add it
+            if (!uniqueElements.has(uniqueKey)) {
+                uniqueElements.set(uniqueKey, element);
+            }
+        });
+    
+        // Return the filtered elements
+        return Array.from(uniqueElements.values());
+}
+
+function filterIgnoredVIDs(files)
+{
+    const ignoredVIDs = [
+        "9b8869b07e739f0653a1ac0586c03686",
+        "af8a7f8c9d20e247111f1c6a2c1f4362",
+        "af8a7f8c9d20e247111f1c6a2c1f4362",
+        "af8a7f8c9d20e247111f1c6a2c1f4362",
+        "c2ffaee6ecb896c082ae94ea43f55afc",
+        "e71c8477b9b6c907bc99aa690b9e613c"
+        ];
+    
+    return files.filter(file => {
+        return !ignoredVIDs.some(id => file.startsWith(id));
+    });
+}
+
+function filterFiles(files)
+{
+    return removeDuplicates(filterIgnoredVIDs(files));
+}
+
+function sortFiles(files) {
+    return files.sort((a, b) => {
+        const getLastInteger = str => {
+            const match = str.match(/-(\d+)$/);
+            return match ? parseInt(match[1], 10) : 0;
+        };
+
+        const aInt = getLastInteger(a);
+        const bInt = getLastInteger(b);
+
+        return bInt - aInt; // Descending order
+    });
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     // DOM Elements
     const loadingScreen = document.getElementById('loading-screen');
@@ -290,18 +345,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const rawFiles = await getFiles("res/comp/");
 
-        const ignoredVIDs = [
-            "9b8869b07e739f0653a1ac0586c03686",
-            "af8a7f8c9d20e247111f1c6a2c1f4362",
-            "af8a7f8c9d20e247111f1c6a2c1f4362",
-            "af8a7f8c9d20e247111f1c6a2c1f4362",
-            "c2ffaee6ecb896c082ae94ea43f55afc",
-            "e71c8477b9b6c907bc99aa690b9e613c"
-            ];
-        
-        const files = rawFiles.filter(file => {
-            return !ignoredVIDs.some(id => file.startsWith(id));
-        });
+        const files = sortFiles(filterFiles(rawFiles));
 
         for (let index = 0; index < files.length; index++) {
             updateLoadingText(`Обработка записи ${index + 1} из ${files.length}...`);
@@ -411,6 +455,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             rememberMeCheckbox.disabled = true;
         }
 
+        
         if (baseDell && baseDell.length > 0 && myVid && myVid.length > 0)
         {
             const myBull = await loadBull(myVid);
