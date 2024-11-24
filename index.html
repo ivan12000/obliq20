@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Веб-страница</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@12.3.3/dist/handsontable.full.min.css">
+</head>
+<body>
+  <!-- Экран загрузки -->
+  <div id="loading-screen"  class="hidden">
+    <div class="spinner"></div>
+    <p id="loading-text">Инициализация...</p>
+  </div>
+
+  <!-- Экран входа -->
+  <div id="login-screen" class="hidden">
+    <div class="form-container">
+      <h1>Вход</h1>
+      <input type="text" id="username" placeholder="Имя пользователя">
+      <input type="password" id="password" placeholder="Пароль">
+
+      <div class="container2">
+      <div id="remember-me-container">
+        <input type="checkbox" id="remember-me" name="remember-me" />
+        <label for="remember-me" style="margin-right: 5px;">Запомнить меня</label>
+      </div>
+      </div>
+      
+      
+      <button id="login-button">Войти</button>
+    </div>
+  </div>
+
+  <!-- Экран смены пароля -->
+  <div id="password-change-screen" class="hidden">
+    <div class="form-container">
+      <h1>Здравствуйте, Анна!</h1>
+      <p>Это Ваш первый вход, пожалуйста, поставьте Ваш личный пароль</p>
+      <input type="password" id="new-password" placeholder="Новый пароль">
+      <input type="password" id="confirm-password" placeholder="Подтвердите пароль">
+      <button id="change-password-button">Установить пароль</button>
+    </div>
+  </div>
+
+  <!-- Основной экран -->
+  <div id="main-screen" class="hidden">
+    
+    
+    <h1>Здравствуйте, Анна!</h1>
+    <p>Здесь приведена Ваша таблица:</p>
+    <div id="hot"></div>
+    <div id="button-container">
+        <button id="logout-button">Выйти</button>
+      </div>
+    
+  </div>
+
+  <div id="popup" class="popup hidden">
+    <p></p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/handsontable@12.3.3/dist/handsontable.full.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
