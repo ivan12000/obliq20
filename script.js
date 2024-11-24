@@ -336,6 +336,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const tableWidget = document.getElementById('hot');
     const loadingText = document.getElementById('loading-text');
     const rememberMeCheckbox = document.getElementById('remember-me');
+    const downloadLink = document.getElementById("downloadLink");
 
     let baseDell;
     let myVid;
@@ -411,6 +412,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             const values = myData[0].map(key => jsonMap.has(key) ? jsonMap.get(key) : "Высшее (бакалавриат)");
             myData.push(values);
         }
+
+        // Convert the array into a worksheet
+        const worksheet = XLSX.utils.aoa_to_sheet(myData);
+
+        // Create a new workbook and append the worksheet
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Результаты Опросников");
+
+        // Generate the Excel file as a Blob
+        const excelBlob = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+        // Create a temporary URL for the Blob and assign it to the link
+        const blob = new Blob([excelBlob], { type: "application/octet-stream" });
+        const url = URL.createObjectURL(blob);
+        downloadLink.href = url;
     }
 
     // Function to show the main screen
