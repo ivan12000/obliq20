@@ -357,9 +357,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             jsonMap = reviewRecord(jsonMap);
             if (myData.length === 0)
             {
-                myData.push(Array.from(jsonMap.keys()));
+                let tableHeader = Array.from(jsonMap.keys());
+                if (!tableHeader.includes("Уровень образования")) {
+                    let index = tableHeader.indexOf("Семейное положение");
+                    
+                    if (tableHeader !== -1) {
+                        tableHeader.splice(index + 1, 0, "Уровень образования");
+                    }
+                  }
+                myData.push(tableHeader);
             }
-            const values = myData[0].map(key => jsonMap.get(key));
+            const values = myData[0].map(key => jsonMap.has(key) ? jsonMap.get(key) : "");
             myData.push(values);
         }
     }
@@ -455,7 +463,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             rememberMeCheckbox.disabled = true;
         }
 
-        
         if (baseDell && baseDell.length > 0 && myVid && myVid.length > 0)
         {
             const myBull = await loadBull(myVid);
